@@ -118,6 +118,32 @@ module.exports = [
         }
     },
     {
+      route: "inventory/finishing-printing/material-delivery-note",
+      name: "inventory/finishing-printing/material-delivery-note",
+      moduleId: "modules/inventory/finishing-printing/material-delivery-note/index",
+      nav: true,
+      title: "Bon Pengiriman Barang Spinning",
+      auth: true,
+      settings: {
+          group: "Inventory",
+          permission: { "C9": 1, "F1": 1, "F2": 1 },
+          iconClass: "fa fa-dashboard"
+      }
+    },
+    {
+        route: "inventory/finishing-printing/material-delivery-note-weaving",
+        name: "inventory/finishing-printing/material-delivery-note-weaving",
+        moduleId: "modules/inventory/finishing-printing/material-delivery-note-weaving/index",
+        nav: true,
+        title: "Bon Pengiriman Barang Weaving",
+        auth: true,
+        settings: {
+            group: "Inventory",
+            permission: { "C9": 1, "F1": 1, "F2": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+      },
+    {
         route: "inventory/finishing-printing/reports/fp-shipment-document-report",
         name: "inventory/finishing-printing/reports/fp-shipment-document-report",
         moduleId: "modules/inventory/finishing-printing/reports/fp-shipment-document-report/index",
@@ -260,19 +286,19 @@ module.exports = [
             iconClass: "fa fa-dashboard"
         }
     },
-    // {
-    //     route: "inventory/garment/leftover-warehouse/receipt/aval",
-    //     name: "inventory/garment/leftover-warehouse/receipt/aval",
-    //     moduleId: "modules/inventory/garment-leftover-warehouse/receipt/aval/index",
-    //     nav: true,
-    //     title: "Penerimaan Gudang Sisa - AVAL",
-    //     auth: true,
-    //     settings: {
-    //         group: "Inventory",
-    //         permission: { "C9": 1 },
-    //         iconClass: "fa fa-dashboard"
-    //     }
-    // },
+    {
+        route: "inventory/garment/leftover-warehouse/receipt/aval",
+        name: "inventory/garment/leftover-warehouse/receipt/aval",
+        moduleId: "modules/inventory/garment-leftover-warehouse/receipt/aval/index",
+        nav: true,
+        title: "Penerimaan Gudang Sisa - AVAL",
+        auth: true,
+        settings: {
+            group: "Inventory",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
     {
         route: 'inventory/reports/inventory-dystuff-report',
         name: 'inventory/reports/inventory-dystuff-report',
@@ -285,5 +311,43 @@ module.exports = [
             permission: { "*": 1 },
             iconClass: 'fa fa-dashboard'
         }
-    }
+    },
+    {
+        route: "inventory/garment/leftover-warehouse/expenditure/fabric",
+        name: "inventory/garment/leftover-warehouse/expenditure/fabric",
+        moduleId: "modules/inventory/garment-leftover-warehouse/expenditure/fabric/index",
+        nav: true,
+        title: "Pengeluaran Gudang Sisa - FABRIC",
+        auth: true,
+        settings: {
+            group: "Inventory",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "inventory/garment/leftover-warehouse/expenditure/finished-good",
+        name: "inventory/garment/leftover-warehouse/expenditure/finished-good",
+        moduleId: "modules/inventory/garment-leftover-warehouse/expenditure/finished-good/index",
+        nav: true,
+        title: "Pengeluaran Gudang Sisa - BARANG JADI",
+        auth: true,
+        settings: {
+            group: "Inventory",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },{
+        route: "inventory/garment/leftover-warehouse/expenditure/aval",
+        name: "inventory/garment/leftover-warehouse/expenditure/aval",
+        moduleId: "modules/inventory/garment-leftover-warehouse/expenditure/aval/index",
+        nav: true,
+        title: "Pengeluaran Gudang Sisa - AVAL",
+        auth: true,
+        settings: {
+            group: "Inventory",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
 ]

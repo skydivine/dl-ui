@@ -43,7 +43,7 @@ module.exports = [
         name: 'finishing-printing-cost-calculation-approval-md',
         moduleId: './modules/sales/finishing-printing-cost-calculation-approval-md/index',
         nav: true,
-        title: 'Cost Calculation - Dyeing & Printing - Approval MD',
+        title: 'Cost Calculation - Dyeing & Printing - Approval Md',
         auth: true,
         settings: {
             group: "sales",
@@ -156,6 +156,19 @@ module.exports = [
         }
     },
     {
+        route: 'sales/delivery-note-production',
+        name: 'delivery-note-production',
+        moduleId: './modules/sales/delivery-note-production/index',
+        nav: true,
+        title: 'Surat Order Produksi - Spinning',
+        auth: true,
+        settings: {
+            group: "sales",
+            permission: { "A2": 1, "C9": 1 },
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
         route: 'sales/reports/weaving-sales-contract-reports',
         name: 'weaving-sales-contract-report',
         moduleId: './modules/sales/reports/weaving-sales-contract-report/index',
@@ -212,7 +225,7 @@ module.exports = [
         name: 'shin-production-order-approval-md',
         moduleId: './modules/sales/shin-production-order-approval-md/index',
         nav: true,
-        title: 'Validasi Surat Perintah Produksi (New) - Kabag MD',
+        title: 'Validasi Surat Perintah Produksi (New) - Kabag Md',
         auth: true,
         settings: {
             group: "sales",
@@ -290,7 +303,7 @@ module.exports = [
         name: 'sales-invoice',
         moduleId: './modules/sales/sales-invoice/index',
         nav: true,
-        title: 'Faktur Penjualan',
+        title: 'Faktur Penjualan Lokal',
         auth: true,
         settings: {
             group: "sales",
@@ -299,11 +312,24 @@ module.exports = [
         }
     },
     {
-        route: 'sales/sales-receipt',
-        name: 'sales-receipt',
-        moduleId: './modules/sales/sales-receipt/index',
+        route: 'sales/sales-invoice-export',
+        name: 'sales-invoice-export',
+        moduleId: './modules/sales/sales-invoice-export/index',
         nav: true,
-        title: 'Kuitansi Penjualan',
+        title: 'Faktur Penjualan Ekspor',
+        auth: true,
+        settings: {
+            group: "sales",
+            permission: { "A2": 1, "C9": 1 },
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: 'sales/do-return',
+        name: 'do-return',
+        moduleId: './modules/sales/do-return/index',
+        nav: true,
+        title: 'DO Retur',
         auth: true,
         settings: {
             group: "sales",
@@ -349,5 +375,5 @@ module.exports = [
             permission: { "A2": 1, "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
-    }
+    },
 ];

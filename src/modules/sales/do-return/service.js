@@ -1,17 +1,13 @@
-import { inject, Lazy } from "aurelia-framework";
-import { HttpClient } from "aurelia-fetch-client";
 import { RestService } from "../../../utils/rest-service";
-import { Container } from "aurelia-dependency-injection";
-import { Config } from "aurelia-api";
 
-const serviceUri = "finishing-printing/do-sales-items";
-const salesContractServiceUri = "sales/finishing-printing-pre-sales-contracts";
-const productionOrderServiceUri = "sales/production-orders/shin";
-const buyerServiceUri = "master/buyers";
+const serviceUri = "sales/do-return";
+const salesInvoiceServiceUri = "sales/sales-invoices";
+const shippingOutServiceUri = "output-shipping";
+  const buyerServiceUri = "master/buyers";
 
 export class Service extends RestService {
   constructor(http, aggregator, config, endpoint) {
-    super(http, aggregator, config, "production-azure");
+    super(http, aggregator, config, "sales");
   }
 
   search(info) {
@@ -43,27 +39,37 @@ export class Service extends RestService {
     var endpoint = `${serviceUri}/pdf/${id}`;
     return super.getPdf(endpoint);
   }
-}
 
-export class ServiceSales extends RestService {
-  constructor(http, aggregator, config, endpoint) {
-    super(http, aggregator, config, "sales");
-  }
-
-  searchSalesContract(info) {
-    var endpoint = `${salesContractServiceUri}`;
+  searchSalesInvoice(info) {
+    var endpoint = `${salesInvoiceServiceUri}`;
     return super.list(endpoint, info);
   }
 
-  getSalesContractById(id, select) {
-    var endpoint = `${salesContractServiceUri}/${id}`;
+  getSalesInvoiceById(id, select) {
+    var endpoint = `${salesInvoiceServiceUri}/${id}`;
     var info = { select: select };
     return super.get(endpoint, null, info);
   }
+}
 
-  getProductionOrderBySalesContractNo(salesContractNo) {
-    var endpoint = `${productionOrderServiceUri}/filterBySalesContract/${salesContractNo}`;
-    return super.list(endpoint);
+export class ServicePackingInventory extends RestService {
+  constructor(http, aggregator, config, endpoint) {
+    super(http, aggregator, config, "packing-inventory");
+  }
+
+  searchOutputShipping(info) {
+    var endpoint = `${shippingOutServiceUri}`;
+    return super.list(endpoint, info);
+  }
+
+  getByShippingOutputId(id) {
+    var endpoint = `${shippingOutServiceUri}/${id}`;
+    return super.get(endpoint);
+  }
+
+  salesLoaderOutputShipping(info) {
+    var endpoint = `${shippingOutServiceUri}/sales-loader`;
+    return super.list(endpoint, info);
   }
 }
 

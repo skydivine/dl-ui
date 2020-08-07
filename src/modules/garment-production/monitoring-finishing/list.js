@@ -26,7 +26,12 @@ export class List {
                 this.data=[];
                 console.log(result);
                 for(var _data of result){
-                      
+                   
+                    _data.qtyOrder=_data.qtyOrder.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    _data.stocks=_data.stock.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    _data.sewingOutsQtyPcs=_data.sewingOutQtyPcs.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    _data.finishingOutsQtyPcs=_data.finishingOutQtyPcs.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    _data.remainsQty=_data.remainQty.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                     this.data.push(_data);
 
                  }
@@ -56,5 +61,59 @@ export class List {
         this.dateFrom = null;
         this.dateTo = null;
         this.unit = null;
+    }
+
+    get sumStock()
+    {
+        var sum=0;
+        if(this.data)
+        {
+            for(var item of this.data)
+            {
+                sum += item.stock;
+            }
+        }
+        
+        return sum.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+    }
+    get sumSewingOutQtyPcs()
+    {
+        var sum=0;
+        if(this.data)
+        {
+            for(var item of this.data)
+            {
+                sum += item.sewingOutQtyPcs;
+            }
+        }
+        
+        return sum.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+    }
+    
+    get sumFinishingOutQtyPcs()
+    {
+        var sum=0;
+        if(this.data)
+        {
+            for(var item of this.data)
+            {
+                sum += item.finishingOutQtyPcs;
+            }
+        }
+       
+        return sum.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+    }
+    get sumRemainQty()
+    {
+        var sum=0;
+        if(this.data)
+        {
+            for(var item of this.data)
+            {
+                sum += item.remainQty;
+            }
+        }
+       
+        return sum.toLocaleString('en-EN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
     }
 }

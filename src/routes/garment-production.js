@@ -327,8 +327,8 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -380,8 +380,8 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -407,8 +407,8 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -462,10 +462,7 @@ module.exports = [
         settings: {
             group: "g-production",
             permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
-
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -595,8 +592,8 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -622,8 +619,8 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            // permission: { "C9": 1 },
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -663,8 +660,7 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            // permission: {"C9": 1, "B1":1},
+            permission: {"C9": 1, "B1":1},
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -690,8 +686,7 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            // permission: {"C9": 1, "B1":1},
+            permission: {"C9": 1, "B1":1},
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -717,8 +712,7 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            // permission: {"C9": 1, "B1":1},
+            permission: {"C9": 1, "B1":1},
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -734,6 +728,18 @@ module.exports = [
             permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
             iconClass: 'fa fa-dashboard'
         }
+    },{
+        route: '/garment-production/monitoring-sewing-bookkeeping',
+        name: 'garment-production-monitoring-sewing-bookkeeping',
+        moduleId: './modules/garment-production/monitoring-sewing-bookkeeping/index',
+        nav: true,
+        title: 'Monitoring Sewing Pembukuan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "B1":1},
+            iconClass: 'fa fa-dashboard'
+        }
     },
     {
         route: '/garment-production/monitoring-finishing',
@@ -744,8 +750,21 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+           permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+             
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: '/garment-production/monitoring-finishing-bookkeeping',
+        name: 'garment-production-monitoring-finishing-bookkeeping',
+        moduleId: './modules/garment-production/monitoring-finishing-bookkeeping/index',
+        nav: true,
+        title: 'Monitoring Finishing Pembukuan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "B1":1},
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -758,8 +777,21 @@ module.exports = [
         auth: true,
         settings: {
             group: "g-production",
-            //permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-            permission: { "C9": 1 },
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+           
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: '/garment-production/monitoring-expenditure-good-delivery-bookkeeping',
+        name: 'garment-production-monitoring-expenditure-good-delivery-bookkeeping',
+        moduleId: './modules/garment-production/monitoring-expenditure-good-delivery-bookkeeping/index',
+        nav: true,
+        title: 'Monitoring Pengiriman Barang Jadi Pembukuan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "B1":1},
             iconClass: 'fa fa-dashboard'
         }
     },
@@ -776,25 +808,65 @@ module.exports = [
             iconClass: 'fa fa-dashboard'
         }
     },
-    // {
-    //     route: '/garment-production/monitoring-production-stock-flow',
-    //     name: 'garment-production-monitoring-production-stock-flow',
-    //     moduleId: './modules/garment-production/monitoring-production-stock-flow/index',
-    //     nav: true,
-    //     title: 'Monitoring Flow Persediaan',
-    //     auth: true,
-    //     settings: {
-    //         group: "g-production",
-    //         permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
-    //         iconClass: 'fa fa-dashboard'
-    //     }
-    // },
+    {
+        route: '/garment-production/monitoring-production-flow-by-size-bookkeeping',
+        name: 'garment-production-monitoring-production-flow-by-size-bookkeeping',
+        moduleId: './modules/garment-production/monitoring-production-flow-by-size-bookkeeping/index',
+        nav: true,
+        title: 'Monitoring Flow Produksi per Size Pembukuan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "B1":1},
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: '/garment-production/monitoring-production-stock-flow',
+        name: 'garment-production-monitoring-production-stock-flow',
+        moduleId: './modules/garment-production/monitoring-production-stock-flow/index',
+        nav: true,
+        title: 'Monitoring Flow Persediaan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: '/garment-production/monitoring-production-stock-flow-bookkeeping',
+        name: 'garment-production-monitoring-production-stock-flow-bookkeeping',
+        moduleId: './modules/garment-production/monitoring-production-stock-flow-bookkeeping/index',
+        nav: true,
+        title: 'Monitoring Flow Persediaan Pembukuan',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "B1":1},
+           
+            iconClass: 'fa fa-dashboard'
+        }
+    },
     {
         route: '/garment-production/production-flow-feature',
         name: 'garment-production-production-flow-feature',
         moduleId: './modules/garment-production/production-flow-feature/index',
         nav: true,
         title: 'Fitur Flow Barang Produksi',
+        auth: true,
+        settings: {
+            group: "g-production",
+            permission: {"C9": 1, "C1A": 1, "C1B": 1, "C2A": 1, "C2B": 1, "C2C": 1, "P": 1 },
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
+        route: '/garment-production/change-date-feature',
+        name: 'garment-production-change-date-feature',
+        moduleId: './modules/garment-production/change-date-feature/index',
+        nav: true,
+        title: 'Fitur Ubah Tanggal',
         auth: true,
         settings: {
             group: "g-production",

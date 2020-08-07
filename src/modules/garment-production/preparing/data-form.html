@@ -74,14 +74,12 @@
         <au-collection 
             items.bind="data.Items" 
             errors.bind="error.Items" 
-            columns.bind="itemsInfo.columns" 
+            columns.bind="isView ? detailsInfo.columns : itemsInfo.columns" 
             options.bind="options"
             read-only.bind="readOnly"
             show.bind="data.UENNo"
             item-template="modules/garment-production/preparing/template/preparing-item"
             view-model.ref="ItemsCollection">
         </au-collection>
-
-
     </au-input-form>
 </template>

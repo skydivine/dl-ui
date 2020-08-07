@@ -42,6 +42,7 @@ export class DataForm {
         this.isExternal=false;
         this.options.isExternal=false;
         
+        this.items.columns = this.items.columns.filter(c => c != "Status Barang");
         if(this.data.ExpenditureType === "TRANSFER"){
             this.data.ExpenditureTo = "GUDANG LAIN";
         }else if(this.data.ExpenditureType === "EXTERNAL"){
@@ -52,7 +53,9 @@ export class DataForm {
             this.data.ExpenditureTo = "PROSES";
         }else if(this.data.ExpenditureType === "SISA"){
             this.data.ExpenditureTo = "GUDANG SISA";
+            this.items.columns.push("Status Barang");
         }
+        this.options.ExpenditureType = this.data.ExpenditureType;
 
         if(this.data.ExpenditureType === "EXTERNAL"){
             this.isExternal = true;
@@ -83,12 +86,16 @@ export class DataForm {
 
     @computedFrom("data.ExpenditureType")
     get filterUnitDeliveryOrder() {
-        var unitDeliveryOrderFilter = {}
-        unitDeliveryOrderFilter.UnitDOType = this.data.ExpenditureType;
-        unitDeliveryOrderFilter.IsUsed = false;
+        var unitDeliveryOrderFilter = {
+            IsUsed : false
+        };
+        
         if(this.data.ExpenditureType === "EXTERNAL"){
-            unitDeliveryOrderFilter.UnitDOType = "RETUR";
-            unitDeliveryOrderFilter.IsUsed = false;
+            unitDeliveryOrderFilter[`UnitDOType== "RETUR" || UnitDOType== "MARKETING"`]=true;
+            //unitDeliveryOrderFilter[`UnitDOType== "MARKETING"`]=true;
+        }
+        else{
+            unitDeliveryOrderFilter[`UnitDOType== "${this.data.ExpenditureType}"`]=true;
         }
         return unitDeliveryOrderFilter;
     }
@@ -111,6 +118,8 @@ export class DataForm {
                 this.isExternal = false;
                 this.options.isExternal=false;
             }
+
+            this.items.columns = this.items.columns.filter(c => c != "Status Barang");
             if(this.data.ExpenditureType === "TRANSFER"){
                 this.data.ExpenditureTo = "GUDANG LAIN";
             }else if(this.data.ExpenditureType === "EXTERNAL"){
@@ -121,7 +130,9 @@ export class DataForm {
                 this.data.ExpenditureTo = "PROSES";
             }else if(this.data.ExpenditureType === "SISA"){
                 this.data.ExpenditureTo = "GUDANG SISA";
+                this.items.columns.push("Status Barang");
             }
+            this.options.ExpenditureType = this.data.ExpenditureType;
         }
         this.context.DONoViewModel._suggestions=[];
         this.context.DONoViewModel.editorValue = "";
@@ -132,6 +143,7 @@ export class DataForm {
         this.data.Storage = null;
         this.isItem = false;
         this.data.StorageRequest = null;
+        this.data.RoJob=null;
         this.error = null;
         this.context.error.Items = [];
         this.context.error = [];
@@ -161,9 +173,17 @@ export class DataForm {
             this.data.UnitDONo = "";
         }
         else if(selectedUnitDeliveryOrder){
+            console.log(selectedUnitDeliveryOrder)
+            if(newValue.UnitDOType== "MARKETING"){
+                this.data.ExpenditureTo="PENJUALAN";
+            }
+            else if(newValue.UnitDOType== "RETUR"){
+                this.data.ExpenditureTo = "PEMBELIAN";
+            }
             this.data.UnitDOId = selectedUnitDeliveryOrder.Id;
             this.data.UnitDONo = selectedUnitDeliveryOrder.UnitDONo;
             this.data.UnitSender = selectedUnitDeliveryOrder.UnitSender;
+            this.data.UnitDODate=selectedUnitDeliveryOrder.UnitDODate;
             this.data.UnitSender.toString = function () {
                 return [this.Code, this.Name]
                     .filter((item, index) => {
@@ -229,6 +249,7 @@ export class DataForm {
         }
         else{
             this.data = null;
+            this.data.RoJob=null;
             this.selectedUnitDeliveryOrder = null;
             this.data.UnitRequest = null;
             this.data.UnitSender = null;

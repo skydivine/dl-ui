@@ -3,13 +3,14 @@ import {
   inject,
   containerless,
   computedFrom,
-  BindingEngine
+  BindingEngine,
 } from "aurelia-framework";
 import { BindingSignaler } from "aurelia-templating-resources";
 import { Service, ServiceCore } from "./service";
 
 var BuyersLoader = require("../../../loader/buyers-loader");
 var CurrencyLoader = require("../../../loader/currency-loader");
+var UnitLoader = require("../../../loader/unit-loader");
 
 @containerless()
 @inject(Service, ServiceCore, BindingSignaler, BindingEngine)
@@ -20,9 +21,10 @@ export class DataForm {
   @bindable error;
   @bindable SalesInvoiceDate;
   @bindable DueDate;
-  @bindable BuyerNPWP;
   @bindable VatType;
-  @bindable getTempo;
+  @bindable Tempo;
+  @bindable Sales;
+  @bindable selectedPaymentType;
 
   constructor(service, serviceCore, bindingSignaler, bindingEngine) {
     this.service = service;
@@ -41,14 +43,15 @@ export class DataForm {
     this.context._this = this;
     this.data = this.context.data;
     this.error = this.context.error;
-
-    this.VatType = this.data.VatType;
-    if (this.data.Buyer) {
-
-      this.BuyerNPWP = this.data.Buyer.NPWP;
+    if (this.data.SalesInvoiceCategory) {
+      this.data.SalesInvoiceCategory = this.data.SalesInvoiceCategory;
+    } else {
+      this.data.SalesInvoiceCategory = this.context.router.currentInstruction.queryParams.activeRole;
     }
 
+    this.VatType = this.data.VatType;
     this.TotalPayment = this.data.TotalPayment;
+    this.Sales = this.data.Sales;
     this.data.TotalPayment = this.getTotalPayment;
 
     if (this.data.Currency && this.data.Currency.Id) {
@@ -58,28 +61,44 @@ export class DataForm {
     }
 
     if (this.data.Buyer && this.data.Buyer.Id) {
-      this.selectedBuyer = await this.serviceCore.getBuyerById(
-        this.data.Buyer.Id
-      );
+      this.selectedBuyer = this.data.Buyer;
+    }
+
+    if (this.data.Unit && this.data.Unit.Id) {
+      this.selectedUnit = await this.serviceCore.getUnitById(this.data.Unit.Id);
     }
 
     if (this.data.Buyer && this.data.Buyer.NPWP) {
-      this.BuyerNPWP = this.data.Buyer.NPWP;
+      this.selectedBuyer.NPWP = this.data.Buyer.NPWP;
     }
-
+    if (this.data.Buyer && this.data.Buyer.NIK) {
+      this.selectedBuyer.NIK = this.data.Buyer.NIK;
+    }
     if (this.data.SalesInvoiceDate) {
       this.SalesInvoiceDate = this.data.SalesInvoiceDate;
     }
-
     if (this.data.DueDate) {
       this.DueDate = this.data.DueDate;
     }
-
     if (this.data.TotalPayment) {
       this.TotalPayment = this.data.TotalPayment;
       this.data.TotalPayment = this.getTotalPayment;
     }
 
+    var salesInvoiceTime = new Date(this.data.SalesInvoiceDate).getTime();
+    var dueTime = new Date(this.data.DueDate).getTime();
+
+    if (salesInvoiceTime && dueTime) {
+      this.Tempo = (dueTime - salesInvoiceTime) / (1000 * 60 * 60 * 24);
+    }
+
+    if (this.data.Sales) {
+      this.Sales = this.data.Sales;
+    }
+
+    if (this.data.PaymentType) {
+      this.selectedPaymentType = this.data.PaymentType;
+    }
   }
 
   get getTotalPayment() {
@@ -88,28 +107,39 @@ export class DataForm {
     if (this.data.SalesInvoiceDetails) {
       for (var detail of this.data.SalesInvoiceDetails) {
         for (var item of detail.SalesInvoiceItems) {
-          result += item.Amount;
+          if (item.Amount) {
+            result += item.Amount;
+          }
         }
       }
     }
-    if (this.VatType == "PPN BUMN") {
+    if (this.data.VatType == "PPN BUMN") {
       totalPayment = result;
-    }
-    else {
+    } else {
       totalPayment = result * 0.1 + result;
     }
     this.data.TotalPayment = totalPayment;
     return totalPayment;
   }
 
+  selectedPaymentTypeChanged(newValue, oldValue) {
+    if (this.selectedPaymentType) {
+      this.data.PaymentType = this.selectedPaymentType;
+      this.itemOptions.PaymentType = this.data.PaymentType;
+    }
+  }
+
   SalesInvoiceDateChanged(newValue, oldValue) {
-    if (this.SalesInvoiceDate && this.DueDate) {
+    if (this.SalesInvoiceDate && this.Tempo) {
       this.data.SalesInvoiceDate = this.SalesInvoiceDate;
-      this.data.DueDate = this.DueDate;
+      this.data.Tempo = this.Tempo;
+      var milisecondTemp = 1000 * 60 * 60 * 24 * this.data.Tempo;
 
       var salesInvoiceTime = new Date(this.data.SalesInvoiceDate).getTime();
-      var dueTime = new Date(this.data.DueDate).getTime();
-      this.getTempo = (dueTime - salesInvoiceTime) / (1000 * 60 * 60 * 24);
+      var dueDate = new Date();
+      dueDate.setTime(salesInvoiceTime + milisecondTemp);
+      this.data.DueDate = new Date(dueDate);
+      this.DueDate = new Date(dueDate);
     }
   }
 
@@ -117,10 +147,20 @@ export class DataForm {
     if (this.SalesInvoiceDate && this.DueDate) {
       this.data.SalesInvoiceDate = this.SalesInvoiceDate;
       this.data.DueDate = this.DueDate;
+    }
+  }
+
+  TempoChanged(newValue, oldValue) {
+    if (this.SalesInvoiceDate && this.Tempo) {
+      this.data.SalesInvoiceDate = this.SalesInvoiceDate;
+      this.data.Tempo = this.Tempo;
+      var milisecondTemp = 1000 * 60 * 60 * 24 * this.data.Tempo;
 
       var salesInvoiceTime = new Date(this.data.SalesInvoiceDate).getTime();
-      var dueTime = new Date(this.data.DueDate).getTime();
-      this.getTempo = (dueTime - salesInvoiceTime) / (1000 * 60 * 60 * 24);
+      var dueDate = new Date();
+      dueDate.setTime(salesInvoiceTime + milisecondTemp);
+      this.data.DueDate = new Date(dueDate);
+      this.DueDate = new Date(dueDate);
     }
   }
 
@@ -133,13 +173,52 @@ export class DataForm {
     }.bind(this),
     onRemove: function () {
       this.context.SalesInvoiceDetailsCollection.bind();
-    }.bind(this)
+    }.bind(this),
   };
   itemOptions = {};
-  shipmentDocumentTableOptions = {}
 
-  salesInvoiceTypeOptions = ["", "BNG", "BAB", "BNS", "RNG", "BRG", "BAG", "BGS", "RRG", "BLL", "BPF", "BSF", "RPF", "BPR", "BSR", "RPR", "BAV", "BON", "BGM", "GPF", "RGF", "GPR", "RGR", "RON"];
-  VatTypeOptions = ["", "PPN Umum", "PPN Kawasan Berikat", "PPN BUMN"];
+  localTypeOptions = [
+    "",
+    "BNG",
+    "BAB",
+    "BNS",
+    // "RNG",
+    "BRG",
+    "BAG",
+    "BGS",
+    // "RRG",
+    "BLL",
+    "BPF",
+    "BSF",
+    // "RPF",
+    "BPR",
+    "BSR",
+    // "RPR",
+    "BAV",
+    "BON",
+    "BGM",
+    "GPF",
+    // "RGF",
+    "GPR",
+    // "RGR",
+    "RON",
+    "BMK",
+    // Retur
+    "RNG",
+    "RRG",
+    "RPF",
+    "RPR",
+    "RGF",
+    "RGR",
+  ];
+  vatTypeOptions = [
+    "",
+    "PPN Umum",
+    "PPN Kawasan Berikat",
+    "PPN BUMN",
+    "PPN Retail",
+  ];
+  paymentTypeOptions = ["", "MTR", "YARD"];
 
   enterDelegate(event) {
     if (event.charCode === 13) {
@@ -170,16 +249,38 @@ export class DataForm {
       this.data.Buyer = {};
       this.data.Buyer.Id = this.selectedBuyer.Id;
       this.data.Buyer.Name = this.selectedBuyer.Name;
+      this.data.Buyer.Code = this.selectedBuyer.Code;
       this.data.Buyer.Address = this.selectedBuyer.Address;
-      if (this.selectedBuyer.NPWP) {
-        this.data.Buyer.NPWP = this.selectedBuyer.NPWP;
-      }
-      this.itemOptions.BuyerId = this.data.BuyerId;
+      this.data.Buyer.NPWP = this.selectedBuyer.NPWP;
+      this.data.Buyer.NIK = this.selectedBuyer.NIK;
+      this.itemOptions.BuyerId = this.data.Buyer.Id;
+      this.itemOptions.Category = this.data.SalesInvoiceCategory;
+      this.itemOptions.HasSalesInvoice = false;
     } else {
       this.data.Buyer.Id = null;
       this.data.Buyer.Name = null;
+      this.data.Buyer.Code = null;
       this.data.Buyer.Address = null;
       this.data.Buyer.NPWP = null;
+      this.data.Buyer.NIK = null;
+      this.itemOptions.BuyerId = null;
+      this.itemOptions.Category = null;
+      this.itemOptions.HasSalesInvoice = false;
+      this.data.SalesInvoiceDetails = [];
+    }
+  }
+
+  @bindable selectedUnit;
+  selectedUnitChanged(newValue, oldValue) {
+    if (this.selectedUnit && this.selectedUnit.Id) {
+      this.data.Unit = {};
+      this.data.Unit.Id = this.selectedUnit.Id;
+      this.data.Unit.Code = this.selectedUnit.Code;
+      this.data.Unit.Name = this.selectedUnit.Name;
+    } else {
+      this.data.Unit.Id = null;
+      this.data.Unit.Code = null;
+      this.data.Unit.Name = null;
     }
   }
 
@@ -188,5 +289,8 @@ export class DataForm {
   }
   get buyersLoader() {
     return BuyersLoader;
+  }
+  get unitLoader() {
+    return UnitLoader;
   }
 }
