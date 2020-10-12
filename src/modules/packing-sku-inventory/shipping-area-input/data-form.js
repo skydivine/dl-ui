@@ -23,7 +23,9 @@ export class DataForm {
         },
     };
     imQuery = { "DestinationArea": "TRANSIT" }
-    itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "QTY Masuk", "Satuan"];
+    shippingTypes = ["ZONA GUDANG", "RETUR BARANG"];
+    itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "Panjang per Packing", "QTY Masuk", "Satuan"];
+    returItemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "Jenis Packing", "QTY Packing", "Packing", "Panjang per Packing", "QTY Masuk", "Satuan"];
     shifts = ["PAGI", "SIANG"];
     areas = ["INSPECTION MATERIAL", "PROD", "TRANSIT", "PACK", "GUDANG JADI", "SHIPPING", "AWAL", "LAB"]
     constructor(service) {
@@ -41,10 +43,29 @@ export class DataForm {
         return `${areaInput.bonNo}`
     }
 
+    returDetailOptions = {};
     detailOptions = {};
     @computedFrom("data.id")
     get isEdit() {
         return (this.data.id || '').toString() != '';
+    }
+
+    // @computedFrom("data.shippingType")
+    // get isRetur(){
+    //     return this.data && this.data.shippingType == "RETUR BARANG";
+    // }
+
+    @bindable ItemCollections;
+    @bindable shippingType;
+    shippingTypeChanged(n, o) {
+        if (this.shippingType) {
+            this.data.shippingType = this.shippingType;
+            this.isRetur = this.shippingType == "RETUR BARANG";
+            this.returDetailOptions.isRetur = this.isRetur;
+            this.detailOptions.isRetur = this.isRetur;
+        } else {
+            this.data.shippingType = null;
+        }
     }
 
     bind(context) {
@@ -63,24 +84,34 @@ export class DataForm {
             isEdit: this.isEdit
         }
 
+        this.returDetailOptions = {
+            isEdit: this.isEdit
+        };
+
         if (this.isEdit && !this.readOnly) {
-            this.itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "QTY Masuk", "Satuan", ""];
+            this.itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "Panjang per Packing", "QTY Masuk", "Satuan", ""];
         } else {
-            this.itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "QTY Masuk", "Satuan"];
+            this.itemColumns = ["No. DO", "No. SPP", "Qty Order", "Buyer", "Material", "Unit", "Warna", "Motif", "Grade", "QTY Packing", "Packing", "Panjang per Packing", "QTY Masuk", "Satuan"];
         }
 
         if (this.data.shippingProductionOrders) {
             this.shippingProductionOrders = this.data.shippingProductionOrders;
         }
 
+        if (this.data.shippingType) {
+            this.shippingType = this.data.shippingType;
+            this.isRetur = this.shippingType == "RETUR BARANG";
+            this.returDetailOptions.isRetur = this.isRetur;
+            this.detailOptions.isRetur = this.isRetur;
+        }
         // if (this.data.bonNo) {
         //     this.selectedPreShipping = {};
         //     this.selectedPreShipping.bonNo = this.data.bonNo;
         // }
     }
     addItemCallback = (e) => {
-        this.shippingProductionOrders = this.shippingProductionOrders || [];
-        this.shippingProductionOrders.push({})
+        this.data.shippingProductionOrders = this.data.shippingProductionOrders || [];
+        this.data.shippingProductionOrders.push({})
     };
 
     // @bindable selectedPreShipping;

@@ -5,7 +5,8 @@ import { Service } from './../service';
 // var ProductionOrderLoader = require('../../../../../loader/production-order-loader');
 // var ProductionOrderLoader = require('../../../../loader/output-packaging-inputspp-loader');
 // var ProductionOrderLoader = require('../../../../loader/output-packaging-inputspp-sum-loader');
-var ProductionOrderLoader = require('../../../../loader/output-packaging-inputspp-group-loader');
+// var ProductionOrderLoader = require('../../../../loader/output-packaging-inputspp-group-loader');
+var ProductionOrderLoader = require('../../../../loader/input-packing-spp-sum-by-grade-loader');
 
 // @inject(Service, BindingEngine, BindingSignaler, DataForm)
 @inject(Service, BindingEngine, BindingSignaler)
@@ -27,6 +28,8 @@ export class ItemSPP {
         this.options = context.options;
         this.context = context.context;
         this.contextOptions = context.context.options;
+
+        this.destinationArea = this.contextOptions.destinationArea;
         this.isEdit = this.contextOptions.isEdit;
         this.readOnly = this.contextOptions.readOnly;
         this.selectedProductionOrder = this.data.ProductionOrder || undefined;
@@ -43,24 +46,42 @@ export class ItemSPP {
 
         // this.isNewStructure = this.context.options.isNewStructure;
         this.itemOptions = {
-            isEdit: this.isEdit
+            isEdit: this.isEdit,
+            destinationArea: this.destinationArea
         };
 
         this.sppFilter = { "BuyerId": this.selectedBuyerId };
         if (this.isEdit) {
             if (this.readOnly) {
-                this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan"];
+                if (this.destinationArea == "TRANSIT") {
+                    this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Ket Transit", "Qty Packaging", "Packaging", "Satuan", "Panjang Per Packing", "QTY Keluar", "Keterangan"];
+                } else {
+                    this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Panjang Per Packing", "QTY Keluar", "Keterangan"];
+                }
+
             } else {
-                this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+                if (this.destinationArea == "TRANSIT") {
+                    this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Ket Transit", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+                } else {
+                    this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+                }
+
             }
 
         } else {
-            this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+            if (this.destinationArea == "TRANSIT") {
+                this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Ket Transit", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+            } else {
+                this.itemColumns = ["Buyer", "Qty Order", "Unit", "Material", "Warna", "Motif", "Mesin Produksi", "Jenis", "Grade", "Qty Packaging", "Packaging", "Satuan", "Saldo", "Panjang Per Packing", "QTY Keluar", "Keterangan", ""];
+            }
         }
 
         // if (this.data.productionOrderId) {
         //     this.selectedProductionOrder = await this.service.getProductionOrderById(this.data.productionOrderId)
         // }
+
+
+
         if (this.data.productionOrder && this.data.productionOrder.id) {
             this.selectedProductionOrder = {};
             this.selectedProductionOrder.Id = this.data.productionOrder.id;
@@ -93,6 +114,8 @@ export class ItemSPP {
                 this.data.unit = "DYEING"
             }
         }
+
+
     }
 
     controlOptions = {

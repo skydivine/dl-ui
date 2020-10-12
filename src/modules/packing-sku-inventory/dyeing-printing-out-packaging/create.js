@@ -72,6 +72,7 @@ export class Create {
                     itemSpp.packagingQTY = item.packagingQTY;
                     itemSpp.packagingType = item.packagingType;
                     itemSpp.packagingUnit = item.packagingUnit;
+                    itemSpp.packingLength = item.packingLength;
                     itemSpp.packingInstruction = item.packingInstruction;
                     itemSpp.qtyOrder = item.qtyOrder;
                     itemSpp.qtyOut = item.qtyOut;
@@ -79,6 +80,7 @@ export class Create {
                     itemSpp.uomUnit = item.uomUnit;
                     itemSpp.cartNo = item.cartNo;
                     itemSpp.remark = item.remark;
+                    itemSpp.productionMachine=item.productionMachine;
                     itemSpp.status = item.status;
                     itemSpp.material = item.material;
                     itemSpp.id = item.id;

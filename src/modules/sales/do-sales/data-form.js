@@ -29,6 +29,7 @@ export class DataForm {
   @bindable fillEachBale;
   @bindable LengthUom;
   @bindable WeightUom;
+  @bindable BaleUom;
   @bindable selectedSalesContract;
   @bindable selectedSalesContractSpinning;
   @bindable selectedSalesContractWeaving;
@@ -132,14 +133,12 @@ export class DataForm {
   }
 
   doSalesLocalItemsInfo = {
-    columns: [
-      "No SPP",
-      "Material Konstruksi",
-      "Jenis / Code",
-      "Jumlah Packing",
-      "Panjang",
-      "Hasil Konversi",
-    ],
+    columns: ["No SPP", "Material Konstruksi", "Jenis / Code", "Jumlah Packing", "Panjang", "Hasil Konversi", ],
+    onAdd: function () {
+      this.context.ItemsCollection.bind();
+      this.data.DOSalesDetailItems = this.data.DOSalesDetailItems || [];
+      this.data.DOSalesDetailItems.push({});
+    }.bind(this),
     onRemove: function () {
       this.context.ItemsCollection.bind();
     }.bind(this),
@@ -179,6 +178,11 @@ export class DataForm {
       "Berat",
       "Hasil Konversi",
     ],
+    onAdd: function () {
+      this.context.ItemsCollection.bind();
+      this.data.DOSalesDetailItems = this.data.DOSalesDetailItems || [];
+      this.data.DOSalesDetailItems.push({});
+    }.bind(this),
     onRemove: function () {
       this.context.ItemsCollection.bind();
     }.bind(this),
@@ -216,8 +220,8 @@ export class DataForm {
 
   packingUomOptions = ["", "DOS"];
   packingUomWeavingOptions = ["", "PCS", "BALE"];
-  packingUomDyeingOptions = ["", "PCS", "Roll", "PT"];
-
+  packingUomDyeingOptions = ["", "PCS", "ROLL", "PT"];
+  baleUomDyeingOptions = ["", "PCS", "ROLL", "YDS", "MTR"];
   lengthUomOptions = ["", "YDS", "MTR"];
   weightUomOptions = ["", "BALE", "KG"];
 

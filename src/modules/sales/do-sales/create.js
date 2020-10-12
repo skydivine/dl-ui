@@ -32,6 +32,7 @@ export class Create {
   @bindable sc;
   @bindable fillEachBale;
   @bindable LengthUom;
+  @bindable BaleUom;
   @bindable WeightUom;
   @bindable selectedSalesContract;
 
@@ -185,6 +186,7 @@ export class Create {
   packingUomWeavingOptions = ["", "PCS", "BALE"];
   packingUomDyeingOptions = ["", "PCS", "Roll", "PT"];
   packingUomDyeingExportOptions = ["", "PCS", "Roll", "PT","Carton"];
+  baleUomDyeingOptions = ["", "PCS", "ROLL", "YDS", "MTR"];
   lengthUomOptions = ["", "YDS", "MTR"];
   weightUomOptions = ["", "BALE", "KG"];
 
@@ -194,7 +196,7 @@ export class Create {
   doSalesWeavingLocalOptions = ["", "GL"];
   doSalesWeavingExportOptions = ["", "KKG"];
 
-  doSalesDyeingLocalOptions = ["", "US", "UP", "UK", "RK", "USS", "UPS", "JS", "JB"];
+  doSalesDyeingLocalOptions = ["", "US", "UP", "UK", "RK", "USS", "UPS", "JS", "JB", "SP", "SD"];
 
   doSalesDyeingExportOptions = ["", "KKP", "KKF"]
 

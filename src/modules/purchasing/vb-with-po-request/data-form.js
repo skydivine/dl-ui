@@ -14,6 +14,7 @@ export class DataForm {
     @bindable title;
     // useVat: false 
     @bindable selectedCurrency;
+    @bindable isGarment = false;
 
     controlOptions = {
         label: {
@@ -24,8 +25,9 @@ export class DataForm {
         }
     }
 
-    itemsColumns = [{ header: "Nomor PO", value: "purchaseRequest.no" },
-    { header: "Unit", value: "Unit" }]
+    itemsColumns = ["Nomor PO"]
+
+    garmentSelection = [{ id: 2, label: "Job", value: "GARMENT" }, { id: 1, label: "Umum", value: "UMUM" }];
 
     constructor(service, bindingEngine) {
         this.service = service;
@@ -33,22 +35,21 @@ export class DataForm {
     }
 
     bind(context) {
-
         this.context = context;
         this.data = this.context.data;
-        console.log(this.data)
         this.error = this.context.error;
         this.data.TotalPaid = this.getTotalPaid;
 
-        if (this.data.Unit && this.data.Unit.Id) {
-            this.selectedUnit = this.data.Unit;
+        if (this.data.SuppliantUnit && this.data.SuppliantUnit.Id) {
+            this.selectedSuppliantUnit = this.data.SuppliantUnit;
+            this.options.Unit = this.data.SuppliantUnit;
         }
         this.selectedCurrency = this.data.Currency;
 
-        if (this.data.TotalPaid) {
-            this.TotalPaid = this.data.TotalPaid;
-            this.data.TotalPaid = this.getTotalPaid;
-        }
+        // if (this.data.TotalPaid) {
+        //   this.TotalPaid = this.data.TotalPaid;
+        //   this.data.TotalPaid = this.getTotalPaid;
+        // }
     }
 
     get addItems() {
@@ -63,6 +64,9 @@ export class DataForm {
 
     @bindable selectedCurrency;
     selectedCurrencyChanged(newValue, oldValue) {
+        if (oldValue && this.data.Items && this.data.Items.length > 0) {
+            this.data.Items.splice(0, this.data.Items.length);
+        }
 
         this.data.Currency = newValue;
         if (this.data.Currency) {
@@ -70,30 +74,20 @@ export class DataForm {
         }
     }
 
-    @bindable selectedUnit;
-    selectedUnitChanged(newValue, oldValue) {
-        if (this.selectedUnit && this.selectedUnit.Id) {
-            this.data.unit = {};
-            this.data.unit.id = this.selectedUnit.Id;
-            this.data.unit.name = this.selectedUnit.Name;
-            this.data.unit.code = this.selectedUnit.Code;
+    @bindable selectedSuppliantUnit;
+    selectedSuppliantUnitChanged(newValue, oldValue) {
+        if (oldValue && this.data.Items && this.data.Items.length > 0) {
+            this.data.Items.splice(0, this.data.Items.length);
+        }
 
-            if (this.selectedUnit.Division) {
-                this.data.division = {};
-                this.data.division.id = this.selectedUnit.Division.Id;
-                this.data.division.name = this.selectedUnit.Division.Name;
-            }
-            else {
-                this.data.division = {};
-                this.data.division.id = this.data.Division.Id;
-                this.data.division.name = this.data.Division.Name;
-            }
-        }
-        else {
-            this.data.unit.id = this.selectedUnit.id;
-            this.data.unit.name = this.selectedUnit.name;
-            this.data.unit.code = this.selectedUnit.code;
-        }
+        if (newValue) {
+            this.data.SuppliantUnit = newValue;
+            this.options.Unit = this.data.SuppliantUnit;
+
+            this.isGarment = (this.data.SuppliantUnit.Division.Name == "GARMENT") ? true : false;
+            this.options.TypePurchasing = (this.data.SuppliantUnit.Division.Name == "GARMENT") ? "GARMENT" : "";
+        } else
+            delete this.data.SuppliantUnit;
     }
 
     // get getTotalPaid() {
@@ -122,49 +116,39 @@ export class DataForm {
 
     get getTotalPaid() {
         var result = 0;
-        // console.log(this.data.Items)
         if (this.data.Items) {
-            // console.log("masuk")
-            // console.log(this.data.Items)
-            for (var productList of this.data.Items) {
-                // console.log(productList.details)
-                if (productList.details) {
+            for (var item of this.data.Items) {
+                if (item.PurchaseOrderExternal && item.PurchaseOrderExternal.Items) {
 
-                    for (var proddetail of productList.details) {
-                        // console.log(proddetail.priceBeforeTax)
-                        result += parseFloat(proddetail.priceBeforeTax.toString().replace(/,/g,"")) * parseFloat(proddetail.dealQuantity.toString().replace(/,/g,""));
-                    }
-                }
-                else if(productList.Details){
-                    for (var proddetail of productList.Details) {
-                        // console.log(proddetail.priceBeforeTax)
-                        result += parseFloat(proddetail.priceBeforeTax.toString().replace(/,/g,"")) * parseFloat(proddetail.dealQuantity.toString().replace(/,/g,""));
+                    for (var epoItem of item.PurchaseOrderExternal.Items) {
+                        // let dealQuantity = parseFloat(proddetail.dealQuantity.toString().replace(/,/g, ""));
+                        let price = epoItem.DealQuantity * epoItem.Price;
+                        if (epoItem.UseVat)
+                            price += price * 0.1;
+                        result += price;
                     }
                 }
             }
         }
 
-        // else {
-        //     if (this.data.items) {
-        //         for (var productList of this.data.items) {
-        //             for (var proddetail of productList.details) {
-        //                 result += proddetail.priceBeforeTax * proddetail.defaultQuantity;
-        //             }
-        //         }
-        //     }
-
-        // }
         this.data.TotalPaid = result;
         return result.toLocaleString('en-EN', { minimumFractionDigits: 2 });
     }
 
     unitView = (unit) => {
         return `${unit.Code} - ${unit.Name}`
-
     }
 
     get unitLoader() {
         return UnitLoader;
     }
 
+    selectedTypePurchasingChanged(e) {
+        let type = (e.detail) ? e.detail : "";
+
+        if (type) {
+            this.data.TypePurchasing = (type == "GARMENT") ? type : "UMUM";
+            this.options.TypePurchasing = this.data.TypePurchasing;
+        }
+    }
 }

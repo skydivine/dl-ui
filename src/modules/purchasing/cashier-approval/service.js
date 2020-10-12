@@ -4,15 +4,31 @@ import { RestService } from '../../../utils/rest-service';
 import { Container } from 'aurelia-dependency-injection';
 import { Config } from "aurelia-api"
 
-const serviceUri = 'cashier-approval';
+// const serviceUri = 'cashier-approval';
+const serviceUri = "vb-request-documents";
 
 export class Service extends RestService {
     constructor(http, aggregator, config, endpoint) {
         super(http, aggregator, config, 'finance');
     }
 
-    create(data) {
+    search(info) {
         let endpoint = `${serviceUri}`;
+        return super.list(endpoint, info);
+    }
+
+    searchNotApproveVB(info) {
+        let endpoint = `${serviceUri}/not-approved`;
+        return super.list(endpoint, info);
+    }
+
+    approval(data) {
+        let endpoint = `${serviceUri}/approval`;
+        return super.post(endpoint, data);
+    }
+
+    cancellation(data) {
+        let endpoint = `${serviceUri}/cancellation`;
         return super.post(endpoint, data);
     }
 

@@ -7,6 +7,8 @@ import { activationStrategy } from 'aurelia-router';
 export class Create {
     hasCancel = true;
     hasSave = true;
+    isVisible = false;
+    isCreate = true;
 
     constructor(router, service) {
         this.router = router;
@@ -20,6 +22,8 @@ export class Create {
     bind(params) {
         this.data = {};
         this.error = {};
+        this.data.Date = new Date();
+        this.data.Date.setHours(0, 0, 0, 0);
     }
 
     cancel(event) {

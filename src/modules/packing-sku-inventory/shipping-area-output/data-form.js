@@ -2,7 +2,8 @@ import { inject, bindable, computedFrom } from "aurelia-framework";
 import { Service } from "./service";
 
 let ShippingAreaLoader = require("../../../loader/output-shipping-loader");
-var DOSalesLoader = require("../../../loader/do-sales-loader");
+let FilterSPPLoader = require("../../../loader/pre-output-shipping-spp-loader");
+var DOSalesLoader = require("../../../loader/do-stock-dyeingprinting-loader");
 @inject(Service)
 export class DataForm {
   @bindable title;
@@ -118,25 +119,8 @@ export class DataForm {
 
       this.isSales = true;
       if (this.readOnly) {
-        this.itemColumns = [
-          "No. SPP",
-          "Buyer",
-          "Material",
-          "Unit",
-          "Warna",
-          "Motif",
-          "Jenis",
-          "Grade 1",
-          "Grade 2",
-          "Keterangan",
-          "Qty Packing",
-          "Packing",
-          "Panjang Packing",
-          "Qty Keluar",
-          "Berat (KG)"
-        ];
-      } else {
-        if (this.isEdit) {
+
+        if (this.destinationArea == "TRANSIT") {
           this.itemColumns = [
             "No. SPP",
             "Buyer",
@@ -148,12 +132,12 @@ export class DataForm {
             "Grade 1",
             "Grade 2",
             "Keterangan",
+            "Ket Transit",
             "Qty Packing",
             "Packing",
             "Panjang Packing",
             "Qty Keluar",
-            "Berat (KG)",
-            ""
+            "Berat (KG)"
           ];
         } else {
           this.itemColumns = [
@@ -173,6 +157,91 @@ export class DataForm {
             "Qty Keluar",
             "Berat (KG)"
           ];
+        }
+
+      } else {
+        if (this.isEdit) {
+          if (this.destinationArea == "TRANSIT") {
+            this.itemColumns = [
+              "No. SPP",
+              "Buyer",
+              "Material",
+              "Unit",
+              "Warna",
+              "Motif",
+              "Jenis",
+              "Grade 1",
+              "Grade 2",
+              "Keterangan",
+              "Ket Transit",
+              "Qty Packing",
+              "Packing",
+              "Panjang Packing",
+              "Qty Keluar",
+              "Berat (KG)",
+              ""
+            ];
+          } else {
+            this.itemColumns = [
+              "No. SPP",
+              "Buyer",
+              "Material",
+              "Unit",
+              "Warna",
+              "Motif",
+              "Jenis",
+              "Grade 1",
+              "Grade 2",
+              "Keterangan",
+              "Qty Packing",
+              "Packing",
+              "Panjang Packing",
+              "Qty Keluar",
+              "Berat (KG)",
+              ""
+            ];
+          }
+
+        } else {
+          if (this.destinationArea == "TRANSIT") {
+            this.itemColumns = [
+              "No. SPP",
+              "Buyer",
+              "Material",
+              "Unit",
+              "Warna",
+              "Motif",
+              "Jenis",
+              "Grade 1",
+              "Grade 2",
+              "Keterangan",
+              "Ket Transit",
+              "Qty Packing",
+              "Packing",
+              "Panjang Packing",
+              "Qty Keluar",
+              "Berat (KG)"
+            ];
+          } else {
+            this.itemColumns = [
+              "No. SPP",
+              "Buyer",
+              "Material",
+              "Unit",
+              "Warna",
+              "Motif",
+              "Jenis",
+              "Grade 1",
+              "Grade 2",
+              "Keterangan",
+              "Qty Packing",
+              "Packing",
+              "Panjang Packing",
+              "Qty Keluar",
+              "Berat (KG)"
+            ];
+          }
+
         }
       }
 
@@ -246,7 +315,8 @@ export class DataForm {
     }
     this.detailOptions = {
       isEdit: this.isEdit,
-      isSales: this.isSales
+      isSales: this.isSales,
+      destinationArea: this.destinationArea
     };
     if (this.readOnly) {
       this.adjItemColumns = ["No. SPP", "Qty Order", "Jenis Order", "Material", "Unit", "Buyer", "Warna", "Motif", "Grade 1", "QTY Pack", "Satuan Pack", "Satuan", "QTY Satuan", "QTY Total", "No Dokumen"];
@@ -269,6 +339,10 @@ export class DataForm {
       this.selectedDO.Id = this.data.deliveryOrder.id;
       this.selectedDO.DOSalesNo = this.data.deliveryOrder.no;
     }
+
+    if (this.ItemsCollection) {
+      this.ItemsCollection.bind();
+    }
   }
   addItemCallback = (e) => {
     this.data.adjShippingProductionOrders =
@@ -288,6 +362,9 @@ export class DataForm {
         this.data.bonNo = this.selectedShipping.bonNo;
         this.data.deliveryOrder = this.selectedShipping.deliveryOrder;
         this.data.inputShippingId == this.selectedShipping.id;
+      }
+      if (this.ItemsCollection) {
+        this.ItemsCollection.bind();
       }
     }
   }
@@ -309,36 +386,22 @@ export class DataForm {
         );
       }
 
+      if (this.ItemsCollection) {
+        this.ItemsCollection.bind();
+      }
     }
   }
 
+  @bindable ItemsCollection;
   @bindable destinationArea;
-  destinationAreaChanged(n, o) {
+  async destinationAreaChanged(n, o) {
     if (this.destinationArea) {
       this.data.destinationArea = this.destinationArea;
       if (this.destinationArea !== "BUYER") {
 
         this.isSales = true;
         if (this.readOnly) {
-          this.itemColumns = [
-            "No. SPP",
-            "Buyer",
-            "Material",
-            "Unit",
-            "Warna",
-            "Motif",
-            "Jenis",
-            "Grade 1",
-            "Grade 2",
-            "Keterangan",
-            "Qty Packing",
-            "Packing",
-            "Panjang Packing",
-            "Qty Keluar",
-            "Berat (KG)"
-          ];
-        } else {
-          if (this.isEdit) {
+          if (this.destinationArea == "TRANSIT") {
             this.itemColumns = [
               "No. SPP",
               "Buyer",
@@ -350,12 +413,12 @@ export class DataForm {
               "Grade 1",
               "Grade 2",
               "Keterangan",
+              "Ket Transit",
               "Qty Packing",
               "Packing",
               "Panjang Packing",
               "Qty Keluar",
-              "Berat (KG)",
-              ""
+              "Berat (KG)"
             ];
           } else {
             this.itemColumns = [
@@ -375,6 +438,102 @@ export class DataForm {
               "Qty Keluar",
               "Berat (KG)"
             ];
+          }
+
+        } else {
+          if (this.isEdit) {
+            if (this.destinationArea == "TRANSIT") {
+              this.itemColumns = [
+                "No. SPP",
+                "Buyer",
+                "Material",
+                "Unit",
+                "Warna",
+                "Motif",
+                "Jenis",
+                "Grade 1",
+                "Grade 2",
+                "Keterangan",
+                "Ket Transit",
+                "Qty Packing",
+                "Packing",
+                "Panjang Packing",
+                "Qty Keluar",
+                "Berat (KG)",
+                ""
+              ];
+            } else {
+              this.itemColumns = [
+                "No. SPP",
+                "Buyer",
+                "Material",
+                "Unit",
+                "Warna",
+                "Motif",
+                "Jenis",
+                "Grade 1",
+                "Grade 2",
+                "Keterangan",
+                "Qty Packing",
+                "Packing",
+                "Panjang Packing",
+                "Qty Keluar",
+                "Berat (KG)",
+                ""
+              ];
+            }
+
+          } else {
+            if (this.destinationArea == "TRANSIT") {
+              this.itemColumns = [
+                "No. SPP",
+                "Buyer",
+                "Material",
+                "Unit",
+                "Warna",
+                "Motif",
+                "Jenis",
+                "Grade 1",
+                "Grade 2",
+                "Keterangan",
+                "Ket Transit",
+                "Qty Packing",
+                "Packing",
+                "Panjang Packing",
+                "Qty Keluar",
+                "Berat (KG)"
+              ];
+            } else {
+              this.itemColumns = [
+                "No. SPP",
+                "Buyer",
+                "Material",
+                "Unit",
+                "Warna",
+                "Motif",
+                "Jenis",
+                "Grade 1",
+                "Grade 2",
+                "Keterangan",
+                "Qty Packing",
+                "Packing",
+                "Panjang Packing",
+                "Qty Keluar",
+                "Berat (KG)"
+              ];
+            }
+
+
+          }
+        }
+
+        if (!this.isEdit) {
+          if (this.destinationArea !== "PENJUALAN") {
+            this.selectedFilterSPP = null;
+            this.data.displayShippingProductionOrders = await this.service.getProductionOrderInput();
+            if (this.ItemsCollection) {
+              this.ItemsCollection.bind();
+            }
           }
         }
 
@@ -454,7 +613,14 @@ export class DataForm {
         this.selectedDO = null;
         this.data.bonNo = null;
         this.data.inputShippingId = 0;
-        this.data.displayShippingProductionOrders = [];
+        if (this.data.destinationArea == "PENJUALAN" || this.data.destinationArea == "BUYER") {
+
+          this.data.displayShippingProductionOrders = [];
+        }
+      }
+
+      if (this.ItemsCollection) {
+        this.ItemsCollection.bind();
       }
     }
   }
@@ -462,4 +628,30 @@ export class DataForm {
   ExportToExcel() {
     this.service.generateExcel(this.data.id);
   }
+
+  get filterSPPLoader() {
+    return FilterSPPLoader;
+  }
+
+  sppTextFormatter = (spp) => {
+    return `${spp.productionOrder.no}`
+  }
+
+  @bindable selectedFilterSPP;
+  async selectedFilterSPPChanged(n, o) {
+    if (this.selectedFilterSPP) {
+
+      this.data.displayShippingProductionOrders = await this.service.getProductionOrderInputById(this.selectedFilterSPP.productionOrder.id);
+      if (this.ItemsCollection) {
+        this.ItemsCollection.bind();
+      }
+    } else {
+
+      this.data.displayShippingProductionOrders = await this.service.getProductionOrderInput();
+      if (this.ItemsCollection) {
+        this.ItemsCollection.bind();
+      }
+    }
+  }
+
 }

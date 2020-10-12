@@ -81,9 +81,11 @@ export class DataForm {
     }
 
     async bind(context) {
-        //console.log(context);
+
         this.context = context;
+        this.isCreateOutput = context.isCreateOutput;
         this.data = this.context.data;
+        console.log(this.data);
         this.error = this.context.error;
         this.localInputDate = new Date(Date.parse(this.data.DateInput));
         this.localOutputDate = new Date(Date.parse(this.data.DateOutput));
@@ -126,8 +128,19 @@ export class DataForm {
                 Code: _machineCode,
                 Kanban: this.data.Kanban.Code
             }
-        }
 
+            if (!this.data.Id && this.output && this.data.Kanban.Id != 0)
+                this.data.GoodOutput = Number(this.data.Kanban.Cart.Qty);
+
+
+        }
+        reason = {
+            "machines": {
+                "$elemMatch": {
+                    "code": this.data.Machine.Code
+                }
+            }
+        }
         this.filterReason = { reason: reason, machineCode: machineCodes };
 
         this.filterMachine = {
@@ -258,7 +271,8 @@ export class DataForm {
             if (this.output && this.data.Kanban.Id != 0)
                 this.data.GoodOutput = Number(selectedKanban.Cart.Qty);
 
-            if (this.Output) {
+            console.log(this.data.GoodOutput);
+            if (this.output) {
                 var filterDaily = {
                     "KanbanCode": this.data.Kanban.Code,
                     IsDeleted: false,
@@ -363,7 +377,7 @@ export class DataForm {
     }
 
     get stepLoader() {
-        // console.log(this.data.Machine);
+
         return this.data.Machine && this.data.Machine.Steps ? this.data.Machine.Steps : [];
     }
 

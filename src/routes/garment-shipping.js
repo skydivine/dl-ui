@@ -52,6 +52,32 @@ module.exports = [
         }
     },
     {
+        route: "master/garment-courier",
+        name: "garment-courier",
+        moduleId: "modules/master/garment-courier/index",
+        nav: true,
+        title: "Courier",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1, "SG": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "master/garment-insurance",
+        name: "garment-insurance",
+        moduleId: "modules/master/garment-insurance/index",
+        nav: true,
+        title: "Insurance",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1, "SG": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
         route: "master/garment-transaction-type",
         name: "garment-transaction-type",
         moduleId: "modules/master/garment-transaction-type/index",
@@ -196,6 +222,19 @@ module.exports = [
         }
     },
     {
+        route: "garment-shipping/vb-payment",
+        name: "garment-shipping/vb-payment",
+        moduleId: "modules/garment-shipping/vb-payment/index",
+        nav: true,
+        title: "Pembayaran VB",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
         route: "garment-shipping/monitoring/packing-list",
         name: "garment-shipping/monitoring/packing-list",
         moduleId: "modules/garment-shipping/monitoring/packing-list/index",
@@ -222,11 +261,37 @@ module.exports = [
         }
     },
     {
+        route: "garment-shipping/monitoring/shipping-instruction",
+        name: "garment-shipping/monitoring/shipping-instruction",
+        moduleId: "modules/garment-shipping/monitoring/garment-shipping-instruction/index",
+        nav: true,
+        title: "Monitoring Shipping Instruction",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    }, 
+    {
+        route: "garment-shipping/monitoring/cover-letter",
+        name: "garment-shipping/monitoring/cover-letter",
+        moduleId: "modules/garment-shipping/monitoring/garment-cover-letter/index",
+        nav: true,
+        title: "Monitoring Surat Pengantar",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
         route: "garment-shipping/monitoring/omzet-by-unit",
         name: "garment-shipping/monitoring/omzet-by-unit",
         moduleId: "modules/garment-shipping/monitoring/garment-omzet-monthy-by-unit/index",
         nav: true,
-        title: "Monitoring Omzet Garment Per Unit",
+        title: "Monitoring Omzet Garment Per Unit / Bulan",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -239,7 +304,7 @@ module.exports = [
         name: "garment-shipping/monitoring/omzet-by-buyer",
         moduleId: "modules/garment-shipping/monitoring/garment-omzet-monthly-by-buyer/index",
         nav: true,
-        title: "Monitoring Omzet Garment Per Buyer",
+        title: "Monitoring Omzet Garment Per Buyer / Bulan",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -252,7 +317,7 @@ module.exports = [
         name: "garment-shipping/monitoring/omzet-by-section",
         moduleId: "modules/garment-shipping/monitoring/garment-omzet-monthly-by-section/index",
         nav: true,
-        title: "Monitoring Omzet Garment Per Seksi",
+        title: "Monitoring Omzet Garment Per Seksi / Bulan",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -265,7 +330,7 @@ module.exports = [
         name: "garment-shipping/monitoring/omzet-by-country",
         moduleId: "modules/garment-shipping/monitoring/garment-omzet-monthly-by-country/index",
         nav: true,
-        title: "Monitoring Omzet Garment Per Negara",
+        title: "Monitoring Omzet Garment Per Negara / Bulan",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -278,7 +343,7 @@ module.exports = [
         name: "garment-shipping/monitoring/omzet-by-comodity",
         moduleId: "modules/garment-shipping/monitoring/garment-omzet-monthly-by-comodity/index",
         nav: true,
-        title: "Monitoring Omzet Garment Per Komoditi",
+        title: "Monitoring Omzet Garment Per Komoditi / Bulan",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -291,7 +356,7 @@ module.exports = [
         name: "garment-shipping/credit-note",
         moduleId: "modules/garment-shipping/credit-note/index",
         nav: true,
-        title: "Nota Kredit",
+        title: "Credit Note",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -304,7 +369,7 @@ module.exports = [
         name: "garment-shipping/debit-note",
         moduleId: "modules/garment-shipping/debit-note/index",
         nav: true,
-        title: "Nota Debet",
+        title: "Debit Note",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -317,7 +382,7 @@ module.exports = [
         name: "garment-shipping/monitoring/debit-note",
         moduleId: "modules/garment-shipping/monitoring/garment-debit-note/index",
         nav: true,
-        title: "Monitoring Nota Debit",
+        title: "Monitoring Debit Note",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -330,7 +395,20 @@ module.exports = [
         name: "garment-shipping/monitoring/credit-note",
         moduleId: "modules/garment-shipping/monitoring/garment-credit-note/index",
         nav: true,
-        title: "Monitoring Nota Kredit",
+        title: "Monitoring Credit Note",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "garment-shipping/local-sales-contract",
+        name: "garment-shipping/local-sales-contract",
+        moduleId: "modules/garment-shipping/local-sales-contract/index",
+        nav: true,
+        title: "Sales Contract (Lokal)",
         auth: true,
         settings: {
             group: "g-shipping",
@@ -417,6 +495,32 @@ module.exports = [
         }
     },
     {
+        route: "garment-shipping/monitoring/local-sales-report",
+        name: "garment-shipping/monitoring/local-sales-report",
+        moduleId: "modules/garment-shipping/monitoring/garment-local-sales-report-by-buyer/index",
+        nav: true,
+        title: "Monitoring Nota Penjualan Lokal",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "garment-shipping/monitoring/omzet-local-sales",
+        name: "garment-shipping/monitoring/omzet-local-sales",
+        moduleId: "modules/garment-shipping/monitoring/garment-omzet-local-sales/index",
+        nav: true,
+        title: "Monitoring Omzet Penjualan Lokal",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    }, 
+    {
         route: "garment-shipping/monitoring/recap-omzet-per-month",
         name: "garment-shipping/monitoring/recap-omzet-per-month",
         moduleId: "modules/garment-shipping/monitoring/recap-omzet-per-month/index",
@@ -448,6 +552,45 @@ module.exports = [
         moduleId: "modules/garment-shipping/monitoring/omzet-year-unit/index",
         nav: true,
         title: "Report Omzet Per Tahun Per Unit",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "garment-shipping/monitoring/omzet-year-section",
+        name: "garment-shipping/monitoring/omzet-year-section",
+        moduleId: "modules/garment-shipping/monitoring/omzet-year-section/index",
+        nav: true,
+        title: "Report Omzet Per Tahun Per Section",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "garment-shipping/monitoring/omzet-year-country",
+        name: "garment-shipping/monitoring/omzet-year-country",
+        moduleId: "modules/garment-shipping/monitoring/omzet-year-country/index",
+        nav: true,
+        title: "Report Omzet Per Tahun Per Negara",
+        auth: true,
+        settings: {
+            group: "g-shipping",
+            permission: { "C9": 1 },
+            iconClass: "fa fa-dashboard"
+        }
+    },
+    {
+        route: "garment-shipping/monitoring/omzet-year-buyer-comodity",
+        name: "garment-shipping/monitoring/omzet-year-buyer-comodity",
+        moduleId: "modules/garment-shipping/monitoring/omzet-year-buyer-comodity/index",
+        nav: true,
+        title: "Report Omzet Per Tahun Per Buyer Per Komoditi",
         auth: true,
         settings: {
             group: "g-shipping",
